@@ -9,16 +9,16 @@ public class Furniture {
 
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
-//>>{furniture name}<<{price}!{quantity}"
-        String regex = "^([>]{2})(?<furniture>[\\w]+)[<]{2}(?<price>[\\d]+.[\\d]+)[!](?<quantity>[\\d]+)";
-        double total = 0;
         List<String> products = new LinkedList<>();
+//>>{furniture name}<<{price}!{quantity}"
+        String regex = "^>>(?<furniture>[A-Za-z]+)<<(?<price>[0-9]+\\.?[0-9]*)!(?<quantity>[0-9]+)";
+        double total = 0;
         Pattern pattern = Pattern.compile(regex);
         while (!input.equals("Purchase")) {
             Matcher matcher = pattern.matcher(input);
             if (matcher.find()) {
                 String nameFur = matcher.group("furniture");
-                Double price = Double.parseDouble(matcher.group("price"));
+                double price = Double.parseDouble(matcher.group("price"));
                 int quantity = Integer.parseInt(matcher.group("quantity"));
                 products.add(nameFur);
                 total += price * quantity;
