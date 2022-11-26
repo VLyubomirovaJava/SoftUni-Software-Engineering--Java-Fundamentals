@@ -1,0 +1,50 @@
+package FinalExamPrep;
+
+import java.util.*;
+
+public class ActivationKeys {
+    public static void main(String[] args) {
+        Scanner scanner =new Scanner(System.in);
+String activationKey = scanner.nextLine();
+String input = scanner.nextLine();
+while (!input.equals("Generate")){
+    String[] command = input.split(">>>");
+    String order = command[0];
+switch (order){
+    case "Contains":
+      if (activationKey.contains(command[1])){
+          System.out.printf("%s contains %s%n",activationKey,command[1]);
+      }else {
+          System.out.println("Substring not found!");
+      }
+      break;
+    case "Flip":
+        String side= command[1];
+        if (side.equals("Upper")){
+            String substring =activationKey.substring(Integer.parseInt(command[2]),Integer.parseInt(command[3]));
+            String toUpperCase = substring.toUpperCase();
+            activationKey =activationKey.replace(substring,toUpperCase);
+            System.out.println(activationKey);
+        }
+        else if(side.equals("Lower")) {
+            String substring =activationKey.substring(Integer.parseInt(command[2]),Integer.parseInt(command[3]));
+            String toLowerCase = substring.toLowerCase();
+            activationKey=activationKey.replace(substring,toLowerCase);
+            System.out.println(activationKey);
+        }
+        break;
+
+    case "Slice":
+        int startIndex =Integer.parseInt(command[1]);
+        int endIndex =Integer.parseInt(command[2]);
+String toDelete =activationKey.substring(startIndex,endIndex);
+activationKey =activationKey.replace(toDelete,"");
+        System.out.println(activationKey);
+        break;
+}
+
+    input= scanner.nextLine();
+}
+        System.out.printf("Your activation key is: %s",activationKey);
+    }
+}
