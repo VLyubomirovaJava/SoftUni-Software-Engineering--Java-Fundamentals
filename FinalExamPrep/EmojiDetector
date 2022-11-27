@@ -1,0 +1,45 @@
+package FinalExamPrep;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class EmojiDetector {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+String text = scanner.nextLine();
+
+long cool =1;
+int countValid =0;
+int sum =0;
+// finding out the numbers in our input text and multiplying them
+        // to get the cool treshold
+        for (int i = 0; i <text.length() ; i++) {
+            if (Character.isDigit(text.charAt(i))){
+                cool *= text.charAt(i) - '0';
+            }
+        }
+        System.out.println("Cool threshold: "+cool);
+        Map<String, Long> emojiList =new LinkedHashMap<>();
+        String regex ="([:*])\\1(?<emoji>[A-Z][a-z]{2,})\\1\\1";
+        // finding the cool emojis within the text
+        Pattern emojiPattern = Pattern.compile(regex);
+        Matcher emojiMatcher =emojiPattern.matcher(text);
+        while (emojiMatcher.find()){
+            countValid++;
+            //creating long to hold the chars from our emojis presented as numbers
+            long curentCoolness =0;
+            //iteration through the emojis
+            for (int i = 0; i <emojiMatcher.group("emoji").length() ; i++) {
+                // gathering each character to our
+                curentCoolness += emojiMatcher.group("emoji").charAt(i);
+            }
+            if (curentCoolness>=cool){
+                emojiList.put(emojiMatcher.group(),curentCoolness);
+            }
+            }
+        System.out.printf("%d emojis found in the text. The cool ones are: %n", countValid);
+        emojiList.forEach((k,v) -> System.out.println(k));
+        }
+    }
