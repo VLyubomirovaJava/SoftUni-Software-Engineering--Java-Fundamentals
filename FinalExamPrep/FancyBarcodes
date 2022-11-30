@@ -1,0 +1,40 @@
+package FinalExamPrep;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class FancyBarcodes {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        int n = Integer.parseInt(scanner.nextLine());
+        String regex = "@#+(?<barcode>[a-zA-Z0-9]{6,})@#+";
+        List<String> barcodes = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            String text = scanner.nextLine();
+            Pattern pattern = Pattern.compile(regex); //verifying if it is a barcode
+            Matcher matcher = pattern.matcher(text);
+            boolean isFound = matcher.find(); // confirming it
+            if (isFound) { // if it's confirmed, we use it as a filter to find those that include digits
+                String barcode = matcher.group(); // returns the input matched previously
+                Pattern patternOne = Pattern.compile("\\d"); // seeking the numbers
+                Matcher matcherOne = patternOne.matcher(barcode);
+                boolean isFoundWithDigits = matcherOne.find();
+                String digits = "";
+                if (!isFoundWithDigits) {
+                    digits = "00";
+                    System.out.println("Product group: " + digits);
+                    continue;
+                }
+                while (isFoundWithDigits) {
+                    digits = digits.concat(matcherOne.group()); // taking the digits out of the matched full barcode
+                    isFoundWithDigits = matcherOne.find();
+                }
+                System.out.println("Product group: " + digits);
+            } else {
+                System.out.println("Invalid barcode");
+            }
+        }
+    }
+}
