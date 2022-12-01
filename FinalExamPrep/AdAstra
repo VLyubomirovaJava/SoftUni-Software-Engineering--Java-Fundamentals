@@ -1,0 +1,29 @@
+package FinalExamPrep;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class AdAstra {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+String text = scanner.nextLine();
+String regex ="([\\|#]*)(?<item>[A-Za-z ]+)\\1(?<date>[\\d]{2}\\/[\\d]{2}\\/[\\d]{2})\\1(?<calories>[\\d]+)\\1";
+Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(text);
+        int calories =0;
+        List <String> food = new ArrayList<>(); //creating a list, where we will keep all food, matched with the regex
+        while (matcher.find()){
+            food.add("Item: "+ matcher.group("item")+   // if we find a match, we add the "item" group from the regex
+                    ", Best before: "+ matcher.group("date")+   // expiry date from the "date" regex group
+                    ", Nutrition: "+ matcher.group("calories")); // calories
+            calories+= Integer.parseInt(matcher.group("calories")); // adding the calories to the total sum we have so far
+
+        }
+        System.out.printf("You have food to last you for: %d days!%n",calories/2000); // calculating for how many days we have enough food, as daily limit is 2k cal
+        for (String s:food) {
+            System.out.println(s);
+        }
+    }
+    }
