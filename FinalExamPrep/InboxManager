@@ -1,0 +1,64 @@
+package FinalExamPrep.Maps;
+
+import java.util.*;
+
+public class InboxManager {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        Map<String, ArrayList<String>> emailData = new HashMap<>();
+        while (!input.equals("Statistics")) {
+            String username;
+            String email;
+            String[] tokens = input.split("->");
+            switch (tokens[0]) {
+                case "Add": // adding the user, if not included already
+                    username = tokens[1];
+                    if (emailData.containsKey(username)) {
+                        System.out.printf("%s is already registered%n", username);
+                    } else {
+                        emailData.put(username, new ArrayList<>());
+                    }
+                    break;
+                case "Send": // adding the email, if the user exists
+                    username = tokens[1];
+                    email = tokens[2];
+                    if (emailData.containsKey(username)) {
+                        emailData.get(username).add(email);
+                    }
+                    break;
+                case "Delete":
+                    username = tokens[1];
+                    if (emailData.containsKey(username)) {
+                        emailData.remove(username);
+                    } else {
+                        System.out.printf("%s not found!%n", username);
+                    }
+                    break;
+            }
+
+            input = scanner.nextLine();
+        }
+        System.out.println(String.format("Users count: %s", emailData.size())); // getting the count of users
+        emailData.
+                entrySet().
+                stream().
+                sorted((a1, a2) -> {
+                    int first = a1.getValue().size();
+                    int second = a2.getValue().size();
+                    if (first == second) {
+                        return a1.getKey().compareTo(a2.getKey());
+                    } else {
+                        return Integer.compare(second, first);
+                    }
+                }).forEach(e -> {
+                    System.out.println(e.getKey());
+                    for (String z : e.getValue()
+                    ) {
+                        System.out.println((String.format(" - %s", z)));
+                    }
+                });
+    }
+}
+
