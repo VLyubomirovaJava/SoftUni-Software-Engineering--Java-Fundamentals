@@ -1,0 +1,72 @@
+package FinalExamPrep.Maps;
+
+import java.util.*;
+
+public class HeroRecruitment {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+String command = scanner.nextLine();
+TreeMap<String,ArrayList<String>> heroes =new TreeMap<>();
+while (!command.equals("End")){
+    String [] tokens =command.split("\\s+");
+    String heroName;
+    String spellName;
+    switch (tokens[0]){
+        case "Enroll":
+            heroName=tokens[1];
+            if (heroes.containsKey(heroName)){
+                System.out.println(String.format("%s is already enrolled.", heroName));
+            } else {
+                heroes.putIfAbsent(heroName,new ArrayList<>());
+            }
+            break;
+        case "Learn":
+            spellName =tokens[2];
+heroName =tokens[1];
+if (!heroes.containsKey(heroName)){
+    System.out.println(String.format("%s doesn't exist.", heroName));
+}
+if (heroes.containsKey(heroName)&& heroes.get(heroName).contains(spellName)){
+    System.out.println(String.format("%s has already learnt %s.", heroName, spellName));
+}else if(heroes.containsKey(heroName)){
+    heroes.get(heroName).add(spellName);
+}
+break;
+        case "Unlearn":
+            heroName =tokens[1];
+            spellName = tokens[2];
+            if (!heroes.containsKey(heroName)){
+                System.out.println(String.format("%s doesn't exist.", heroName));
+            }
+            if (heroes.containsKey(heroName)&& heroes.get(heroName).contains(spellName)){
+                heroes.get(heroName).remove(spellName);
+        }
+            if (heroes.containsKey(heroName)&& !heroes.get(heroName).contains(spellName)){
+            System.out.println(String.format("%s doesn't know %s.%n",heroName,spellName));
+        }
+            break;
+    }
+    command= scanner.nextLine();
+}
+        System.out.println("Heroes:");
+        heroes.entrySet().stream().sorted((a1, a2) -> {
+            int first = a1.getValue().size();
+            int second = a2.getValue().size();
+            if (first==second){ return a1.getKey().compareTo(a2.getKey());}
+            else { return Integer.compare(second, first);}
+        }).forEach(e -> {
+
+            String a =replace(e.getValue().toString());
+            System.out.println(String.format("== %s: %s", e.getKey(), a));
+
+
+        });
+    }
+
+    private static String replace(String value) {
+        value= value.replace("[", "");
+        value= value.replace("]", "");
+        return value;
+    }
+}
