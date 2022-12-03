@@ -1,0 +1,57 @@
+package FinalExamPrep.TextProcessing;
+
+import java.util.*;
+
+public class Username {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        String username = scanner.nextLine();
+        String command = scanner.nextLine();
+        while (!command.equals("Sign up")) {
+            String[] tokens = command.split("\\s+");
+            switch (tokens[0]) {
+                case "Case":
+                    if (tokens[1].equals("lower")) {
+                        username = username.toLowerCase();
+                        System.out.println(username);
+
+                    } else if (tokens[1].equals("upper")) {
+                        username = username.toUpperCase();
+                        System.out.println(username);
+                    }
+                    break;
+                case "Reverse":
+                    int start = Integer.parseInt(tokens[1]);
+                    int end = Integer.parseInt(tokens[2]);
+                    if (start >= 0 && start < username.length() && end >= 0 && end < username.length()) {
+                        StringBuilder print = new StringBuilder(username.substring(start, end + 1)); // creating SB with only the chars form start to end
+                        System.out.println(print.reverse()); // using reverse in class Stringbuilder to reverse it
+                    }
+                    break;
+                case "Cut":
+                    String substring = tokens[1];
+                    if (username.contains(substring)) {//removing the string if it exists in the username
+                        username = username.replace(substring, "");
+                        System.out.println(username);
+                    } else {
+                        System.out.printf("The word %s doesn't contain %s.%n", username, substring);
+                    }
+                    break;
+                case "Replace":
+                  username=  username.replace(tokens[1], "*");
+                    System.out.println(username);
+                    break;
+                case "Check":
+                    if (username.contains(tokens[1])) {
+                        System.out.println("Valid");
+                    } else {
+                        System.out.println("Your username must contain " + tokens[1]);
+                    }
+
+            }
+            command = scanner.nextLine();
+        }
+
+    }
+}
