@@ -1,0 +1,29 @@
+package FinalExamPrep.Regex;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class DestinationMapper {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        String places = scanner.nextLine();
+        String regex = "([=\\/])(?<place>[A-Z][A-Za-z]{2,})\\1";
+        List<String> locations = new ArrayList<>();
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(places);
+        while (matcher.find()) {
+            locations.add(matcher.group("place"));
+        }
+        int travelPoints = 0;
+        for (String place : locations) {
+            travelPoints += place.length();
+        }
+        System.out.print("Destinations: ");
+        System.out.print(String.join(", ", locations));
+        System.out.println();
+        System.out.println("Travel Points: " + travelPoints);
+    }
+}
+
