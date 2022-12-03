@@ -1,0 +1,86 @@
+package FinalExamPrep.TextProcessing;
+
+import java.util.*;
+
+public class NikuldenCharity {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        String text = scanner.nextLine();
+        String command = scanner.nextLine();
+        while (!command.equals("Finish")) {
+            String[] tokens = command.split("\\s+");
+            switch (tokens[0]) {
+                case "Replace":
+                    char current = tokens[1].charAt(0);
+                    char newChar = tokens[2].charAt(0);
+                    text = text.replace(current, newChar);
+                    System.out.println(text);
+                    break;
+
+                case "Cut":
+                    int startIndex = Integer.parseInt(tokens[1]);
+                    int endIndex = Integer.parseInt(tokens[2]);
+                    text = cut(text, startIndex, endIndex);
+                    break;
+                case "Make":
+                    String side = tokens[1];
+                    if (side.equals("Upper")) {
+                        text = text.toUpperCase();
+                    } else if (side.equals("Lower")) {
+                        text = text.toLowerCase();
+                    }
+                    break;
+                case "Check":
+                    if (text.contains(tokens[1])) {
+                        System.out.println("Message contains " + tokens[1]);
+                    } else {
+                        System.out.println("Message doesn't contain " + tokens[1]);
+                    }
+                    break;
+                case "Sum":
+                    int start = Integer.parseInt(tokens[1]);
+                    int end = Integer.parseInt(tokens[2]);
+                    String substring;
+                    int sum = 0;
+                    if (!isValidIndex(start, text.length())) {
+                        System.out.println("Invalid indexes!");
+                    }
+                    if (!isValidIndex(end, text.length())) {
+                        System.out.println("Invalid indexes!");
+
+                    } else if (isValidIndex(end, text.length()) && isValidIndex(start, text.length())) {
+                        substring = text.substring(start, end + 1);
+                        for (int i = 0; i < substring.length(); i++) {
+                            sum += substring.charAt(i);
+                        }
+                        System.out.println(sum);
+                    }
+                    break;
+            }
+                command = scanner.nextLine();
+            }
+        }
+
+        private static String cut(String text,int startIndex, int endIndex){
+            if (!isValidIndex(startIndex, text.length())) {
+                System.out.println("Invalid indexes!");
+                return text;
+            } else if (!isValidIndex(endIndex, text.length())) {
+                System.out.println("Invalid indexes!");
+                return text;
+            }
+            String toRemove = text.substring(startIndex, endIndex + 1);
+            String returnStr = text.replaceAll(toRemove, "");
+            System.out.println(returnStr);
+            return text;
+        }
+
+        private static boolean isValidIndex( int index, int length){
+            if (index < 0 || index >= length) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
