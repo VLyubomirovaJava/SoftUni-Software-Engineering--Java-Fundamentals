@@ -1,0 +1,67 @@
+package FinalExamPrep.Maps;
+
+import java.util.*;
+
+
+public class NikuldenMeals {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        String command = scanner.nextLine();
+        Map<String, List<String>> guestInfo = new HashMap<>();
+        int unliked = 0;
+
+        while (!command.equals("Stop")) {
+            String[] tokens = command.split("-");
+            String guest;
+            String meal;
+            if (tokens[0].equals("Like")) {
+                guest = tokens[1];
+                meal = tokens[2];
+                List<String> currentMeal = guestInfo.get(guest);
+                if (currentMeal == null) {
+                    currentMeal = new ArrayList<>();
+                }
+                    if (!currentMeal.contains(meal)) {
+                        currentMeal.add(meal);
+                    }
+                    guestInfo.put(guest, currentMeal);
+                } else if (tokens[0].equals("Unlike")) {
+                    guest = tokens[1];
+                    meal = tokens[2];
+                    List<String> guestMeal = guestInfo.get(guest);
+                    if (!guestInfo.containsKey(guest)) {
+                        System.out.println(String.format("%s is not at the party.", guest));
+                    }
+                    if (guestInfo.containsKey(guest) && guestMeal.contains(meal)) {
+                        guestMeal.remove(meal);
+                        unliked++;
+                        System.out.println(String.format("%s doesn't like the %s.", guest,meal));
+                    }
+                    else if (guestInfo.containsKey(guest) && !guestMeal.contains(meal)) {
+                        System.out.println(String.format("%s doesn't have the %s in his/her collection.", guest,meal));
+                    }
+                }
+                command = scanner.nextLine();
+            }
+
+            guestInfo.entrySet().stream().sorted((a1, a2) -> {
+                        int first = a1.getValue().size();
+                        int second = a2.getValue().size();
+                        if (first == second) {
+                            return a1.getKey().compareTo(a2.getKey());
+                        } else {
+                            return Integer.compare(second, first);
+                        }
+                    }).
+                    forEach(e -> System.out.println(String.format("%s: %s ", e.getKey(), printList(e.getValue()))));
+            System.out.printf("Unliked meals: %s\n", unliked);
+
+        }
+
+
+    private static Object printList(List<String> value) {
+        return value.toString().replaceAll("[\\[\\]]", "");
+
+    }
+    }
