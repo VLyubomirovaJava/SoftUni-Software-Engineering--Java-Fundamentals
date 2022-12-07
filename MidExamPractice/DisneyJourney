@@ -1,0 +1,36 @@
+package RetakeMid;
+
+import java.util.*;
+
+public class DisneylandJourney {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        double journeyPrice = Double.parseDouble(scanner.nextLine());
+        int months = Integer.parseInt(scanner.nextLine());
+
+        if (months > 12) {
+            return;
+        }
+        double savings = 0;
+        for (int i = 1; i <= months; i++) {
+            double moneySave = journeyPrice * 0.25; // at the end of each month, we save 25% from the journey price
+            if (i == 4 || i == 8 || i == 12) { // every 4th month, we get bonus from the boss
+                savings = savings * 1.25;
+                savings += moneySave;
+            }
+            if (i != 1 && i % 2 == 1) { // if it's an odd month ,but no the first we spend 16 of the total collected so far
+                savings = savings * 0.84;
+                savings += moneySave;
+            } else if (i != 4 && i != 8 && i != 12) {
+                savings += moneySave;
+            }
+        }
+        if (savings > journeyPrice) {
+            double souvenir = savings - journeyPrice;
+            System.out.printf("Bravo! You can go to Disneyland and you will have %.2f lv. for souvenirs.%n", souvenir);
+        } else {
+            System.out.printf("Sorry. You need %.2f lv. more.", journeyPrice - savings);
+        }
+    }
+}
