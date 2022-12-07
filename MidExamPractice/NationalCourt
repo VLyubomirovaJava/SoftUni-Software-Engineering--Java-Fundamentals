@@ -1,0 +1,29 @@
+package RetakeMid;
+
+import java.util.*;
+
+public class NationalCourt {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        int employeeEfficiency1 = Integer.parseInt(scanner.nextLine());
+        int employeeEfficiency2 = Integer.parseInt(scanner.nextLine());
+        int employeeEfficiency3 = Integer.parseInt(scanner.nextLine());
+        int totalPeople = Integer.parseInt(scanner.nextLine());
+        int totalPeoplePerHour = employeeEfficiency1 + employeeEfficiency2 + employeeEfficiency3;
+        int countOfHours = 0;
+        while (totalPeople != 0) {
+            if (countOfHours % 4 == 0 && countOfHours != 0) { // every 4th hour, there is a 1h long break, no people being processed
+                totalPeople = totalPeople;
+                countOfHours++;
+            } else {
+                totalPeople -= totalPeoplePerHour;
+                countOfHours++;
+            }
+            if (totalPeople <= 0) {
+                break;
+            }
+        }
+        System.out.printf("Time needed: %dh.", countOfHours);
+    }
+}
