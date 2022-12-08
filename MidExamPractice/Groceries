@@ -1,0 +1,123 @@
+package RetakeMid;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class Groceries {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        List<String> products = Arrays.stream(scanner.nextLine().split("\\|"))
+                .collect(Collectors.toList());
+        String input = scanner.nextLine();
+        while (!input.equals("Shop!")) {
+
+            String[] command = input.split("%");
+            if (command[0].equals("Important")) {
+                commandImportant(command, products);
+            } else if (command[0].equals("Add")) {
+                commandAdd(command, products);
+            } else if (command[0].equals("Swap")) {
+                commandSwap(command, products);
+            } else if (command[0].equals("Remove")) {
+                commandRemove(command, products);
+            }else if (command[0].equals("Reversed")){
+                commandReversed(command, products);
+            }
+            input = scanner.nextLine();
+        }
+        for (int i = 1; i <= products.size(); i++) {
+            System.out.printf("%d. %s", i, products.get(i - 1));
+            System.out.println();
+        }
+    }
+
+    private static void commandReversed(String[] command, List<String> products) {
+        Collections.reverse(products);
+    }
+
+    private static void commandRemove(String[] command, List<String> products) {
+        String product = command[1];
+        boolean isExist = false;
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).equals(product)) {
+                products.remove(i);
+                isExist = true;
+
+            }
+        }
+        if (!isExist){
+            System.out.printf("Product %s isn't in the list.", product);
+            System.out.println();
+        }
+    }
+
+
+    private static void commandSwap(String[] command, List<String> products) {
+        String product1 = command[1];
+        String product2 = command[2];
+        boolean product1Exist = false;
+        boolean product2Exist = false;
+        int indexProduct1 = 0;
+        int indexProduct2 = 0;
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).equals(product1)) {
+                product1Exist = true;
+                indexProduct1 = i;
+            }
+            if (products.get(i).equals(product2)) {
+                product2Exist = true;
+                indexProduct2 = i;
+            }
+        }
+        if (product1Exist && product2Exist) {
+            products.set(indexProduct1, product2);
+            products.set(indexProduct2, product1);
+        } else if (!product1Exist) {
+            System.out.printf("Product %s missing!", product1);
+            System.out.println();
+        } else  {
+            System.out.printf("Product %s missing!", product2);
+            System.out.println();
+        }
+    }
+
+    private static void commandAdd(String[] command, List<String> products) {
+        String product = command[1];
+        boolean isExist = false;
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).equals(product)) {
+                isExist = true;
+            }
+        }
+        if (isExist) {
+            System.out.println("The product is already in the list.");
+        } else {
+            products.add(product);
+        }
+    }
+
+    private static void commandImportant(String[] command, List<String> products) {
+        String product = command[1];
+        boolean isExist = false;
+        int indexOfProduct = 0;
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).equals(product)) {
+                isExist = true;
+                indexOfProduct = i;
+            }
+        }
+        if (isExist) {
+            products.remove(indexOfProduct);
+            products.add(0, product);
+        } else {
+            products.add(0, product);
+        }
+    }
+}
+
+
+
